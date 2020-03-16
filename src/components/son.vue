@@ -1,7 +1,5 @@
 <template>
-  <div>app.vue
-    <router-link to='/son'>我是路由</router-link>
-  </div>
+  <div>son</div>
 </template>
 
 <script>
