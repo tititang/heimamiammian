@@ -36,7 +36,6 @@
             </el-col>
           </el-row>
         </el-form-item>
-
         <el-form-item prop="ischeck">
           <el-checkbox name="type" class="logincheck" v-model="form.ischeck">
             我已阅读并同意
@@ -48,18 +47,23 @@
           <el-button type="primary" @click="onSubmit" class="loginbtn">登录</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit" class="loginbtn">注册</el-button>
+          <el-button type="primary" @click="onrigister" class="loginbtn">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="rightbox">
       <img src="../../assets/login_banner_ele.png" alt />
     </div>
+    <rigister ref="rigister"></rigister>
   </div>
 </template>
 
 <script>
+import rigister from "./components/rigister";
 export default {
+  components: {
+    rigister
+  },
   data() {
     return {
       form: {
@@ -118,6 +122,9 @@ export default {
           return false;
         }
       });
+    },
+    onrigister() {
+      this.$refs.rigister.dialogFormVisible = true;
     }
   }
 };
@@ -126,7 +133,7 @@ export default {
 <style lang='less'>
 .login {
   height: 100%;
-  background-color: rgb(32, 130, 241);
+  background:linear-gradient(225deg,rgba(20,147,250,1),rgba(1,198,250,1));
   display: flex;
   justify-content: space-around;
   align-items: center;
