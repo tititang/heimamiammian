@@ -8,10 +8,15 @@ import login from '../views/login/index.vue'
 Vue.use(VueRouter)
 //实例化router
 const router = new VueRouter({
-    routes:[
+    routes: [
         {
-            path:'/',
-            component:login
+            path: '/',
+            component: login
+        },
+        //路由重定向
+        {
+            path: '/',
+            redirect: '/login'
         }
     ]
 })
