@@ -32,7 +32,7 @@
               <el-input placeholder="请输入验证码" prefix-icon="el-icon-key" v-model="form.logincode"></el-input>
             </el-col>
             <el-col :span="8" class="logincaptchadiv">
-              <img src="../../assets/login_captcha.png" alt class="logincaptcha" />
+              <img :src="logincode" alt class="logincaptcha" @click="getlogincode" />
             </el-col>
           </el-row>
         </el-form-item>
@@ -60,12 +60,18 @@
 
 <script>
 import rigister from "./components/rigister";
+import { phonepass } from "@/utils/mycheck.js";
+import { apilogin } from "@/api/login.js";
+import { settoken } from "@/utils/mytoken.js";
+//校验的方法
 export default {
   components: {
     rigister
   },
   data() {
     return {
+      logincode: process.env.VUE_APP_URL + "/captcha?type=login",
+      codearr: [],
       form: {
         phone: "",
         password: "",
@@ -76,10 +82,7 @@ export default {
       input2: "",
       input3: "",
       rules: {
-        phone: [
-          { required: true, message: "手机号不能为空", trigger: "blur" },
-          { min: 11, max: 11, message: "长度在 11个字符", trigger: "blur" }
-        ],
+        phone: [{ validator: phonepass, trigger: "blur" }],
         password: [
           { required: true, message: "密码不能为空", trigger: "blur" },
           {
@@ -110,12 +113,28 @@ export default {
     };
   },
   methods: {
+    getlogincode() {
+      this.logincode =
+        process.env.VUE_APP_URL + "/captcha?type=login&t=" + Date.now();
+    },
     onSubmit() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.$message({
-            message: "恭喜你,验证成功",
-            type: "success"
+          apilogin({
+            phone: this.form.phone,
+            password: this.form.password,
+            code: this.form.logincode
+          }).then(res => {
+            window.console.log(res)
+          if(res.data.code==200){
+            settoken(res.data.data.token);
+            //跳转到首页
+            this.$router.push({
+              path:'/index'
+            })
+          }else{
+            this.$message.error(res.data.message)
+          }
           });
         } else {
           this.$message.error("验证失败");
@@ -126,14 +145,18 @@ export default {
     onrigister() {
       this.$refs.rigister.dialogFormVisible = true;
     }
-  }
+  },
 };
 </script>
 
 <style lang='less'>
 .login {
   height: 100%;
-  background:linear-gradient(225deg,rgba(20,147,250,1),rgba(1,198,250,1));
+  background: linear-gradient(
+    225deg,
+    rgba(20, 147, 250, 1),
+    rgba(1, 198, 250, 1)
+  );
   display: flex;
   justify-content: space-around;
   align-items: center;
