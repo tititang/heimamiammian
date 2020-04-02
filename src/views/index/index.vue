@@ -66,8 +66,6 @@ export default {
   created() {
     this.username = this.$store.state.username;
     this.avatar = this.$store.state.avatar;
-    window.console.log('index',this.username)
-    window.console.log('index',this.avatar)
   },
   methods: {
     loginout() {
@@ -79,7 +77,6 @@ export default {
         .then(() => {
           logout()
             .then(res => {
-              window.console.log(res);
               if (res.data.code == 200) {
                 removetoken();
                 this.$router.push("/login");

@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
+//导入过滤器
+import './filters/filtersdate'
 //导入创建的路由
 import router from './router/router'
 //导入element
